@@ -12,7 +12,7 @@
 //     unsigned int  difficulty,
 //     char* input,  int input_size,  /*32*/
 //     char* output, int output_size, /*516?*/
-//     char* proof,  int proof_size,  /*516?*/
+//     char* proof,  int proof_size,  /*258?*/
 //     int   sizeInBits
 // );
 //////////////////////////////////////////////////////////////////////////
@@ -55,15 +55,14 @@ func GenerateVDFAndVerifyRust() {
 	vdf := NewVDFRust(difficulty, input)
 
 	outputChannel := vdf.GetOutputChannel()
+
 	start := time.Now()
 
 	vdf.Execute()
 
 	output := <-outputChannel
 
-	// yBuf, proofBuf := GenerateVDFRust(vdf.input[:], vdf.difficulty, sizeInBits)
-	// copy(vdf.output[:], yBuf)
-	proofBuf := make([]byte, proofsize) // [258]byte{}
+	proofBuf := make([]byte, proofsize)
 	copy(proofBuf, output[258:])
 
 	verified := vdf.Verify(proofBuf)
@@ -143,16 +142,6 @@ func (vdf *VDFRust) Execute() {
 		in, C.int(inputsize),
 		out, C.int(outputsize),
 		C.int(size_in_bits))
-
-	// duration := time.Now().Sub(start)
-
-	// log.Println(fmt.Sprintf("VDF_Rust computation finished, result is  %s", hex.EncodeToString(vdf.output[:])))
-	// log.Println(fmt.Sprintf("VDF_Rust computation finished, time spent %s", duration.String()))
-	// assert.Equal(t, true, vdf.Verify(output), "failed verifying proof")
-
-	// yBuf, proofBuf := GenerateVDFRust(vdf.input[:], vdf.difficulty, sizeInBits)
-	// copy(vdf.output[:], yBuf)
-	// copy(vdf.output[258:], proofBuf)
 
 	go func() {
 		vdf.outputChan <- vdf.output

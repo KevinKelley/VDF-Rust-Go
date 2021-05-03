@@ -1,10 +1,5 @@
 package vdf_rust
 
-import (
-	"fmt"
-	"log"
-)
-
 // VDF is the struct holding necessary state for a hash chain delay function.
 type VDF struct {
 	difficulty int
@@ -12,10 +7,6 @@ type VDF struct {
 	output     [516]byte
 	outputChan chan [516]byte
 	finished   bool
-}
-
-func Reachable() {
-	log.Println(fmt.Sprintf("beeves")) // hex.EncodeToString(output[:])))
 }
 
 //size of long integers in quadratic function group

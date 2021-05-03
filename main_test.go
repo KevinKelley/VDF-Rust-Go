@@ -35,25 +35,11 @@ func TestGenerateVDFAndVerifyRust(t *testing.T) {
 
 }
 
-// func BenchmarkGenerateVDFAndVerifyGo(b *testing.B) {
-// 	input := [inputsize]byte{0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe,
-// 		0xef, 0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef}
+func BenchmarkGenerateVDFAndVerifyGo(b *testing.B) {
 
-// 	vdf := vdf_go.New(difficulty, input)
+	GenerateVDFAndVerifyGo()
 
-// 	outputChannel := vdf.GetOutputChannel()
-// 	start := time.Now()
-
-// 	vdf.Execute()
-
-// 	duration := time.Now().Sub(start)
-
-// 	var output = <-outputChannel
-
-// 	log.Println(fmt.Sprintf("VDF_Go computation finished, result is  %s", hex.EncodeToString(output[:])))
-// 	log.Println(fmt.Sprintf("VDF_Go computation finished, time spent %s", duration.String()))
-// 	// assert.Equal(b, true, vdf.Verify(output), "failed verifying proof")
-// }
+}
 
 func BenchmarkGenerateVDFAndVerifyRust(b *testing.B) {
 
