@@ -17,6 +17,6 @@ char /*bool*/ verify(
     unsigned int  difficulty,
     char* input,  int input_size,   /*32*/
     char* output, int output_size,  /*516?*/
-    char* proof,  int proof_size,   /*516?*/
+    char* proof,  int proof_size,   /*258?*/
     int   sizeInBits                /* 2048 */
 );

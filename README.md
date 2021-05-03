@@ -30,6 +30,8 @@ At small 'size_in_bits', and small difficulty, I had some runs showing a 500x sp
 But at the params that the go code uses, that's gone, and the speeds are roughly in the same order of magnitude...
 I'm working to add the Pietrzak to the benchmarks, in case that one was taking more advantage of the GMP or something...
 
+...now comparison is 2.2s (Go); 827ms (Rust (wesolowski))
+
 
 
 
