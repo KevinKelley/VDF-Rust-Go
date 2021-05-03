@@ -266,18 +266,23 @@ pub extern "C" fn execute(
     output: *mut   c_uchar, output_size: size_t,
     size_in_bits: size_t
 ) {
-    let bufsize = size_in_bits / 3 * 2 + 4;  // 516 bytes for 2048
-    println!("estimated output size: {}", bufsize);
-    println!("provided output size: {}", output_size);
+    // just checking...
+    let bufsize = ((size_in_bits + 7) >> 3) * 2 + 4;  // output and proof; dunno why the extra 4
+    assert_eq!(output_size, bufsize);
+    // println!("estimated output size: {}", bufsize);
+    // println!("provided output size: {}", output_size);
 
     let input_slice = unsafe { slice::from_raw_parts(input as *const u8, input_size as usize) };
     let output_slice: &mut[u8] = unsafe { slice::from_raw_parts_mut(output as *mut u8, output_size as usize) };
 
-    println!("[{} bytes] {}", input_size, hex::encode(input_slice));
+    // println!("[{} bytes] {}", input_size, hex::encode(input_slice));
 
     let wesolowski_vdf = WesolowskiVDFParams(size_in_bits as u16).new();
+
+    // solve yields tuple of   challenge, difficulty as usize, self.int_size_bits
+
     let solution = &wesolowski_vdf.solve(input_slice, u64::from(difficulty)).unwrap()[..];
-    println!("solution [{} bytes]: {}", solution.len(), hex::encode(solution));
+    // println!("solution [{} bytes]: {}", solution.len(), hex::encode(solution));
     assert_eq!(output_size, solution.len());
 
     //output_slice.iter_mut().set_from(solution.iter().cloned());
