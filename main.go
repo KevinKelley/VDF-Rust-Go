@@ -20,7 +20,7 @@
 package main
 
 /*
-#cgo LDFLAGS: -L./lib -lvdf
+#cgo LDFLAGS: -L./lib -lrustvdf
 #include "./lib/vdf_rust.h"
 */
 import "C"
@@ -156,13 +156,11 @@ func (vdf *VDFRust) Verify(proof []byte) bool {
 
 	in := (*C.char)(unsafe.Pointer(&vdf.input[0]))
 	out := (*C.char)(unsafe.Pointer(&vdf.output[0]))
-	prf := (*C.char)(unsafe.Pointer(&proof[0]))
 
 	success := C.verify(
 		C.uint(difficulty),
 		in, C.int(inputsize),
 		out, C.int(outputsize),
-		prf, C.int(258),
 		C.int(size_in_bits))
 
 	if success == 1 {

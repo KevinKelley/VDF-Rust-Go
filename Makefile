@@ -4,8 +4,8 @@ ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 # export $LD_LIBRARY_PATH
 
 build:
-	cd lib/rust-vdf/vdf && cargo build --release
-	cp lib/rust-vdf/target/release/libvdf.so lib/
+	cd lib/rust-vdf && cargo build --release
+	cp lib/rust-vdf/target/release/librustvdf.so lib/
 	go build -ldflags="-r $(ROOT_DIR)lib" main.go
 	go build -ldflags="-r $(ROOT_DIR)lib" main_test.go       # just checking
 
