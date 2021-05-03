@@ -250,7 +250,7 @@ extern crate libc;
 use std::ffi::CStr;
 use libc::{c_uint, size_t, c_uchar};
 use std::{ptr, slice};
-use hex;
+// use hex;   // for debug
 
 #[no_mangle]
 pub extern "C" fn hello(name: *const libc::c_char) {
@@ -269,30 +269,19 @@ pub extern "C" fn execute(
     // just checking...
     let bufsize = ((size_in_bits + 7) >> 3) * 2 + 4;  // output and proof; dunno why the extra 4
     assert_eq!(output_size, bufsize);
-    // println!("estimated output size: {}", bufsize);
-    // println!("provided output size: {}", output_size);
 
     let input_slice = unsafe { slice::from_raw_parts(input as *const u8, input_size as usize) };
     let output_slice: &mut[u8] = unsafe { slice::from_raw_parts_mut(output as *mut u8, output_size as usize) };
-
-    // println!("[{} bytes] {}", input_size, hex::encode(input_slice));
 
     let wesolowski_vdf = WesolowskiVDFParams(size_in_bits as u16).new();
 
     // solve yields tuple of   challenge, difficulty as usize, self.int_size_bits
 
     let solution = &wesolowski_vdf.solve(input_slice, u64::from(difficulty)).unwrap()[..];
-    // println!("solution [{} bytes]: {}", solution.len(), hex::encode(solution));
+
     assert_eq!(output_size, solution.len());
 
-    //output_slice.iter_mut().set_from(solution.iter().cloned());
     output_slice.copy_from_slice(solution);
-    println!("output [{} bytes]: {}", output_slice.len(), hex::encode(output_slice));
-    // assert_eq!(
-    //     &wesolowski_vdf.solve(b"\xaa", 100).unwrap()[..],
-    //     CORRECT_SOLUTION
-    // );
-
 }
 
 #[no_mangle]
@@ -318,12 +307,6 @@ pub extern "C" fn verify(
         return 1;
     }
     return 0
-    
-    // assert_eq!(
-    //     &pietrzak_vdf.solve(b"\xaa", 100).unwrap()[..],
-    //     CORRECT_SOLUTION
-    // );
-    // assert!(pietrzak_vdf.verify(b"\xaa", 100, CORRECT_SOLUTION).is_ok());
 }
 
 struct CVec {

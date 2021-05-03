@@ -16,7 +16,6 @@ type VDF struct {
 
 func Reachable() {
 	log.Println(fmt.Sprintf("beeves")) // hex.EncodeToString(output[:])))
-
 }
 
 //size of long integers in quadratic function group
